@@ -52,7 +52,7 @@ df$date <- as.Date(df$date, format = "%Y-%m-%d")
 ```
 
 ```
-## Error in df$date: object of type 'closure' is not subsettable
+## Error in df$date: $ operator is invalid for atomic vectors
 ```
 
 ```r
@@ -61,23 +61,18 @@ df$interval <- as.factor(df$interval)
 ```
 
 ```
-## Error in df$interval: object of type 'closure' is not subsettable
+## Error in df$interval: $ operator is invalid for atomic vectors
 ```
 
 ```r
 summary(df)
-```
-
-```
-## Error in object[[i]]: object of type 'closure' is not subsettable
-```
-
-```r
 str(df)
 ```
 
 ```
-## function (x, df1, df2, ncp, log = FALSE)
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     198     198     198     198     198     198 
+##  int 198
 ```
 
 #### Mean total number of steps taken per day
@@ -90,7 +85,7 @@ total_steps <- aggregate(steps ~ date, df, sum)
 ```
 
 ```
-## Error in terms.formula(formula, data = data): 'data' argument is of the wrong type
+## Error in eval(predvars, data, env): not that many frames on the stack
 ```
 
 ```r
@@ -162,7 +157,7 @@ mean_steps <- df %>% group_by(interval) %>% summarize(Mean=mean(steps, na.rm=TRU
 ```
 
 ```
-## Error in UseMethod("group_by_"): no applicable method for 'group_by_' applied to an object of class "function"
+## Error in UseMethod("group_by_"): no applicable method for 'group_by_' applied to an object of class "c('integer', 'numeric')"
 ```
 
 ```r
@@ -218,7 +213,7 @@ paste("Total number of missing values in the dataset is", sum(is.na(dft$steps)))
 ```
 
 ```
-## Error in dft$steps: object of type 'closure' is not subsettable
+## Error in dft$steps: $ operator is invalid for atomic vectors
 ```
 
 * The strategy for filling in all of the missing values in the dataset is using 

@@ -245,26 +245,23 @@ Also displayed is the summary of the dataset.</p>
 <pre><code class="r">df$date &lt;- as.Date(df$date, format = &quot;%Y-%m-%d&quot;)
 </code></pre>
 
-<pre><code>## Error in df$date: object of type &#39;closure&#39; is not subsettable
+<pre><code>## Error in df$date: $ operator is invalid for atomic vectors
 </code></pre>
 
 <pre><code class="r">dft&lt;-df
 df$interval &lt;- as.factor(df$interval)
 </code></pre>
 
-<pre><code>## Error in df$interval: object of type &#39;closure&#39; is not subsettable
+<pre><code>## Error in df$interval: $ operator is invalid for atomic vectors
 </code></pre>
 
 <pre><code class="r">summary(df)
+str(df)
 </code></pre>
 
-<pre><code>## Error in object[[i]]: object of type &#39;closure&#39; is not subsettable
-</code></pre>
-
-<pre><code class="r">str(df)
-</code></pre>
-
-<pre><code>## function (x, df1, df2, ncp, log = FALSE)
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     198     198     198     198     198     198 
+##  int 198
 </code></pre>
 
 <h4>Mean total number of steps taken per day</h4>
@@ -277,7 +274,7 @@ taken per day. Also included is the glimpse of the output data.</li>
 <pre><code class="r">total_steps &lt;- aggregate(steps ~ date, df, sum)
 </code></pre>
 
-<pre><code>## Error in terms.formula(formula, data = data): &#39;data&#39; argument is of the wrong type
+<pre><code>## Error in eval(predvars, data, env): not that many frames on the stack
 </code></pre>
 
 <pre><code class="r">head(total_steps)
@@ -341,7 +338,7 @@ steps taken, averaged across all days (y-axis).</li>
 mean_steps &lt;- df %&gt;% group_by(interval) %&gt;% summarize(Mean=mean(steps, na.rm=TRUE))
 </code></pre>
 
-<pre><code>## Error in UseMethod(&quot;group_by_&quot;): no applicable method for &#39;group_by_&#39; applied to an object of class &quot;function&quot;
+<pre><code>## Error in UseMethod(&quot;group_by_&quot;): no applicable method for &#39;group_by_&#39; applied to an object of class &quot;c(&#39;integer&#39;, &#39;numeric&#39;)&quot;
 </code></pre>
 
 <pre><code class="r"># Plot the time series plot; have to convert the x variable, interval into 
@@ -393,7 +390,7 @@ of missing days may introduce bias into some calculations or summaries of the da
 <pre><code class="r">paste(&quot;Total number of missing values in the dataset is&quot;, sum(is.na(dft$steps)))
 </code></pre>
 
-<pre><code>## Error in dft$steps: object of type &#39;closure&#39; is not subsettable
+<pre><code>## Error in dft$steps: $ operator is invalid for atomic vectors
 </code></pre>
 
 <ul>
