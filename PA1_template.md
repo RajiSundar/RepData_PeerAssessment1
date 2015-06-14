@@ -34,45 +34,31 @@ df <- read.csv("activity.csv",
         na.strings="NA", 
         colClasses=c("numeric", "character", "numeric"))
 ```
-
-```
-## Warning in file(file, "rt"): cannot open file 'activity.csv': No such file
-## or directory
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
 #### Process/transform the data into a format suitable for the analyses.
 The date column is changed to date class and interval to factor.
 Also displayed is the summary of the dataset.
 
 ```r
 df$date <- as.Date(df$date, format = "%Y-%m-%d")
-```
-
-```
-## Error in df$date: $ operator is invalid for atomic vectors
-```
-
-```r
 dft<-df
 df$interval <- as.factor(df$interval)
-```
-
-```
-## Error in df$interval: $ operator is invalid for atomic vectors
-```
-
-```r
 summary(df)
 str(df)
 ```
 
 ```
-##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##     198     198     198     198     198     198 
-##  int 198
+##      steps             date               interval    
+##  Min.   :  0.00   Min.   :2012-10-01   0      :   61  
+##  1st Qu.:  0.00   1st Qu.:2012-10-16   5      :   61  
+##  Median :  0.00   Median :2012-10-31   10     :   61  
+##  Mean   : 37.38   Mean   :2012-10-31   15     :   61  
+##  3rd Qu.: 12.00   3rd Qu.:2012-11-15   20     :   61  
+##  Max.   :806.00   Max.   :2012-11-30   25     :   61  
+##  NA's   :2304                          (Other):17202  
+## 'data.frame':	17568 obs. of  3 variables:
+##  $ steps   : num  NA NA NA NA NA NA NA NA NA NA ...
+##  $ date    : Date, format: "2012-10-01" "2012-10-01" ...
+##  $ interval: Factor w/ 288 levels "0","5","10","15",..: 1 2 3 4 5 6 7 8 9 10 ...
 ```
 
 #### Mean total number of steps taken per day
@@ -82,18 +68,17 @@ taken per day. Also included is the glimpse of the output data.
 
 ```r
 total_steps <- aggregate(steps ~ date, df, sum)
-```
-
-```
-## Error in eval(predvars, data, env): not that many frames on the stack
-```
-
-```r
 head(total_steps)
 ```
 
 ```
-## Error in head(total_steps): object 'total_steps' not found
+##         date steps
+## 1 2012-10-02   126
+## 2 2012-10-03 11352
+## 3 2012-10-04 12116
+## 4 2012-10-05 13294
+## 5 2012-10-06 15420
+## 6 2012-10-07 11015
 ```
 
 * This histogram gives a pictorial representation of the total number of steps 
@@ -108,42 +93,20 @@ ggplot(total_steps, aes(x = steps)) +
        theme_bw() 
 ```
 
-```
-## Error in ggplot(total_steps, aes(x = steps)): object 'total_steps' not found
-```
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png) 
 
 * The mean and median of the total number of steps taken per day are:
 
 ```r
 MeanOfSteps   <- mean(total_steps$steps, na.rm=TRUE)
-```
-
-```
-## Error in mean(total_steps$steps, na.rm = TRUE): object 'total_steps' not found
-```
-
-```r
 paste("Mean of total number of steps taken per day = ", MeanOfSteps)
-```
-
-```
-## Error in paste("Mean of total number of steps taken per day = ", MeanOfSteps): object 'MeanOfSteps' not found
-```
-
-```r
 MedianOfSteps <- median(total_steps$steps, na.rm=TRUE)
-```
-
-```
-## Error in median(total_steps$steps, na.rm = TRUE): object 'total_steps' not found
-```
-
-```r
 paste("Median of total number of steps taken per day = ", MedianOfSteps)
 ```
 
 ```
-## Error in paste("Median of total number of steps taken per day = ", MedianOfSteps): object 'MedianOfSteps' not found
+## [1] "Mean of total number of steps taken per day =  10766.1886792453"
+## [1] "Median of total number of steps taken per day =  10765"
 ```
 #### Average daily activity pattern
 
@@ -154,13 +117,7 @@ paste("Median of total number of steps taken per day = ", MedianOfSteps)
 ```r
 # Find average number of steps on all days grouped by the 5-minute interval
 mean_steps <- df %>% group_by(interval) %>% summarize(Mean=mean(steps, na.rm=TRUE))
-```
 
-```
-## Error in UseMethod("group_by_"): no applicable method for 'group_by_' applied to an object of class "c('integer', 'numeric')"
-```
-
-```r
 # Plot the time series plot; have to convert the x variable, interval into 
 #  integer in order to plot
 ggplot(mean_steps, aes(x=as.integer(levels(interval)), y=Mean)) +   
@@ -171,9 +128,7 @@ ggplot(mean_steps, aes(x=as.integer(levels(interval)), y=Mean)) +
        theme_bw()
 ```
 
-```
-## Error in ggplot(mean_steps, aes(x = as.integer(levels(interval)), y = Mean)): object 'mean_steps' not found
-```
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
 
 * Which 5-minute interval, on average across all the days in the dataset, 
   contains the maximum number of steps?
@@ -181,20 +136,14 @@ ggplot(mean_steps, aes(x=as.integer(levels(interval)), y=Mean)) +
 ```r
 # what is the maximum number of steps
 paste("Maximum = ", max(mean_steps$Mean))
-```
-
-```
-## Error in paste("Maximum = ", max(mean_steps$Mean)): object 'mean_steps' not found
-```
-
-```r
 # which 5-minute interval corresponds to this maximum number of steps
 paste("5-minute interval corresponding to the maximum number of steps = ",
        mean_steps[which.max(mean_steps$Mean),]$interval)
 ```
 
 ```
-## Error in paste("5-minute interval corresponding to the maximum number of steps = ", : object 'mean_steps' not found
+## [1] "Maximum =  206.169811320755"
+## [1] "5-minute interval corresponding to the maximum number of steps =  835"
 ```
 The **835^th^** interval has maximum 206 steps.
 
@@ -213,7 +162,7 @@ paste("Total number of missing values in the dataset is", sum(is.na(dft$steps)))
 ```
 
 ```
-## Error in dft$steps: $ operator is invalid for atomic vectors
+## [1] "Total number of missing values in the dataset is 2304"
 ```
 
 * The strategy for filling in all of the missing values in the dataset is using 
@@ -239,10 +188,6 @@ for (i in 1:nrow(dft)) {
 }
 ```
 
-```
-## Error in 1:nrow(dft): argument of length 0
-```
-
 * Create a new dataset that is equal to the original dataset but with the missing
   data filled in.
 
@@ -250,18 +195,7 @@ for (i in 1:nrow(dft)) {
 ```r
 df_new <- cbind(dft, StepsFilled)  ## column bind the stepsfilled vector to the new dataframe
 df_imputed <- df_new[, 2:4]       ## Remove the columns with steps as NAs
-```
-
-```
-## Error in df_new[, 2:4]: subscript out of bounds
-```
-
-```r
 names(df_imputed) <- c("date", "interval", "steps")
-```
-
-```
-## Error in names(df_imputed) <- c("date", "interval", "steps"): object 'df_imputed' not found
 ```
 
 
@@ -269,13 +203,8 @@ names(df_imputed) <- c("date", "interval", "steps")
 
 ```r
 total_steps_imputed <- aggregate(steps ~ date, df_imputed, sum)
-```
 
-```
-## Error in eval(expr, envir, enclos): object 'df_imputed' not found
-```
 
-```r
 ## Make a histogram of the total number of steps taken each day
 
 ggplot(total_steps_imputed, aes(x = steps)) + 
@@ -286,42 +215,20 @@ ggplot(total_steps_imputed, aes(x = steps)) +
         theme_bw() 
 ```
 
-```
-## Error in ggplot(total_steps_imputed, aes(x = steps)): object 'total_steps_imputed' not found
-```
+![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png) 
 
 * The mean and median total number of steps taken per day.
 
 ```r
 MeanOfSteps   <- mean(total_steps_imputed$steps, na.rm=TRUE)
-```
-
-```
-## Error in mean(total_steps_imputed$steps, na.rm = TRUE): object 'total_steps_imputed' not found
-```
-
-```r
 paste("Mean of total number of steps taken per day = ", MeanOfSteps)
-```
-
-```
-## Error in paste("Mean of total number of steps taken per day = ", MeanOfSteps): object 'MeanOfSteps' not found
-```
-
-```r
 MedianOfSteps <- median(total_steps_imputed$steps, na.rm=TRUE)
-```
-
-```
-## Error in median(total_steps_imputed$steps, na.rm = TRUE): object 'total_steps_imputed' not found
-```
-
-```r
 paste("Median of total number of steps taken per day = ", MedianOfSteps)
 ```
 
 ```
-## Error in paste("Median of total number of steps taken per day = ", MedianOfSteps): object 'MedianOfSteps' not found
+## [1] "Mean of total number of steps taken per day =  10766.1886792453"
+## [1] "Median of total number of steps taken per day =  10766.1886792453"
 ```
 
  * Rounded values of mean and median from before and after the imputation are as 
@@ -349,13 +256,6 @@ variable called 'day' can have two levels Weekday or Weekend.
 
 ```r
 df_imputed["day"] <- ""
-```
-
-```
-## Error in df_imputed["day"] <- "": object 'df_imputed' not found
-```
-
-```r
 for (i in 1:nrow(df_imputed))
 {       if (weekdays(df_imputed[i,]$date) == "Saturday") 
         { df_imputed[i,]$day <- "Weekend"} 
@@ -365,18 +265,7 @@ for (i in 1:nrow(df_imputed))
         
         else {df_imputed[i,]$day <- "Weekday"}
 }
-```
-
-```
-## Error in nrow(df_imputed): object 'df_imputed' not found
-```
-
-```r
 df_imputed$day <- as.factor(df_imputed$day)
-```
-
-```
-## Error in is.factor(x): object 'df_imputed' not found
 ```
 
 * This panel plot containing a time series plot shows the 5-mininterval (x-axis)
@@ -385,13 +274,7 @@ weekend days (y-axis).
 
 ```r
 mean_steps_imputed <- df_imputed %>% group_by(interval, day) %>% summarize(Mean=mean(steps))
-```
 
-```
-## Error in eval(expr, envir, enclos): object 'df_imputed' not found
-```
-
-```r
 xyplot(Mean ~ interval | day, mean_steps_imputed,
         type = "l",
         layout = c(1, 2), 
@@ -400,9 +283,7 @@ xyplot(Mean ~ interval | day, mean_steps_imputed,
         main = " Panel plot of the time series")
 ```
 
-```
-## Error in eval(substitute(groups), data, environment(x)): object 'mean_steps_imputed' not found
-```
+![plot of chunk panelplot](figure/panelplot-1.png) 
 
 The panel plot provides an easy way to spot the patterns of average number of steps per interval over the 
 weekend vs over the weekdays.
